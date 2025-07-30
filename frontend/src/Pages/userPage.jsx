@@ -1,0 +1,644 @@
+import { FileText, Moon, Sun, Upload, MessageCircle, FileDown, Zap, User, LogOut, Search, Clock, File, Mic, ArrowUp, Plus, Settings } from 'lucide-react';
+import { useState, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { bgcolor } from '../contexts/context';
+import Transition from '../transitions/transiton';
+import useLogin from '../auth/loginFunction';
+import { auth } from '../contexts/context';
+import useLogout from '../auth/loginFunction';
+import Cookies from 'universal-cookie';
+import axios from "axios"
+ function UserPage() {
+  const cookies=new Cookies();
+  const {isDark, setIsDark} = useContext(bgcolor);
+  const [dragActive, setDragActive] = useState(false);
+  const [message, setMessage] = useState('');
+  const [selectedAction, setSelectedAction] = useState('summarize');
+  const fileInputRef = useRef(null);
+   const { isLogin,setIsLogin,setUserDetail, userDetail, error, loading } = useContext(auth);
+  const Navigate=useNavigate();
+ // const logout=useLogout();
+
+  const theme = {
+    bg: isDark ? "#1a1a1a" : "#f5f5f5",
+    text: isDark ? "#ffffff" : "#333333",
+    textSecondary: isDark ? "#cccccc" : "#666666",
+    textTertiary: isDark ? "#999999" : "#777777",
+    circle1: isDark ? "#2a2a2a" : "#e0e0e0",
+    circle2: isDark ? "#333333" : "#d5d5d5",
+    circle3: isDark ? "#252525" : "#e8e8e8",
+    inputBg: isDark ? "#2d2d2d" : "#ffffff",
+    inputBorder: isDark ? "#404040" : "#e0e0e0",
+    yellow: "#f4c430",
+    cardBg: isDark ? "#252525" : "#ffffff",
+    cardBorder: isDark ? "#333333" : "#e0e0e0"
+  };
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFiles(e.dataTransfer.files);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      handleFiles(e.target.files);
+    }
+  };
+
+  const handleFiles = (files) => {
+    Array.from(files).forEach(file => {
+      console.log('File uploaded:', file.name);
+      // Here you would typically handle the file upload to your backend
+    });
+  };
+
+  const openFileDialog = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (message.trim()) {
+      console.log('Message sent:', message);
+      setMessage('');
+    }
+  };
+
+
+  return (
+    
+    <Transition>
+    <div 
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        backgroundColor: theme.bg,
+        fontFamily: "system-ui, -apple-system, sans-serif",
+        position: "relative",
+        overflow: "hidden",
+        transition: "background-color 0.3s ease"
+      }}
+      onDragEnter={handleDrag}
+      onDragLeave={handleDrag}
+      onDragOver={handleDrag}
+      onDrop={handleDrop}
+    >
+      
+      {/* Fixed Background Logo */}
+      <div style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        fontSize: "20rem",
+        fontWeight: "900",
+        color: theme.text,
+        opacity: 0.02,
+        zIndex: 1,
+        userSelect: "none",
+        pointerEvents: "none",
+        transition: "color 0.3s ease, opacity 0.3s ease"
+      }}>
+        Kempt.
+      </div>
+
+      {/* Background circles */}
+      <div style={{
+        position: "absolute",
+        top: "-100px",
+        right: "-100px",
+        width: "300px",
+        height: "300px",
+        backgroundColor: theme.circle1,
+        borderRadius: "50%",
+        opacity: 0.6,
+        transition: "background-color 0.3s ease",
+        zIndex: 2
+      }} />
+      
+      <div style={{
+        position: "absolute",
+        bottom: "-150px",
+        left: "200px",
+        width: "400px",
+        height: "400px",
+        backgroundColor: theme.circle2,
+        borderRadius: "50%",
+        opacity: 0.4,
+        transition: "background-color 0.3s ease",
+        zIndex: 2
+      }} />
+      
+      <div style={{
+        position: "absolute",
+        top: "100px",
+        left: "-100px",
+        width: "250px",
+        height: "250px",
+        backgroundColor: theme.circle3,
+        borderRadius: "50%",
+        opacity: 0.5,
+        transition: "background-color 0.3s ease",
+        zIndex: 2
+      }} />
+      
+      {/* Drag Overlay */}
+      {dragActive && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(244, 196, 48, 0.1)",
+          border: `3px dashed ${theme.yellow}`,
+          zIndex: 1000,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backdropFilter: "blur(2px)"
+        }}>
+          <div style={{
+            textAlign: "center",
+            color: theme.text
+          }}>
+            <div style={{
+              width: "100px",
+              height: "100px",
+              backgroundColor: theme.yellow,
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 1rem auto"
+            }}>
+              <Upload size={50} color={isDark ? "#1a1a1a" : "#333"} />
+            </div>
+            <h2 style={{
+              fontSize: "2rem",
+              fontWeight: "bold",
+              margin: "0 0 0.5rem 0"
+            }}>
+              Drop your files here
+            </h2>
+            <p style={{
+              fontSize: "1.1rem",
+              color: theme.textSecondary,
+              margin: "0"
+            }}>
+              Upload documents to start chatting
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Header */}
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "1rem 2rem",
+        borderBottom: `1px solid ${theme.cardBorder}`,
+        position: "sticky",
+        top: 0,
+        backgroundColor: theme.cardBg,
+        zIndex: 100,
+        transition: "all 0.3s ease"
+      }}>
+        
+        {/* Logo */}
+        <div style={{
+          fontSize: "2.5rem",
+          fontWeight: "bold",
+          color: theme.text,
+          transition: "color 0.3s ease"
+        }}>
+          Kempt.
+        </div>
+
+        {/* Header Controls */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem"
+        }}>
+          
+          {/* Dark mode toggle */}
+          <button
+            onClick={() => setIsDark(!isDark)}
+            style={{
+              backgroundColor: isDark ? "#f5f5f5" : "#1a1a1a",
+              border: `2px solid ${theme.text}`,
+              borderRadius: "50px",
+              padding: "0.8rem 1.2rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              cursor: "pointer",
+              color: isDark ? "#333333" : "#ffffff",
+              fontSize: "0.9rem",
+              fontWeight: "500",
+              transition: "all 0.3s ease"
+            }}
+          >
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            {isDark?"Light":"Dark"}
+          </button>
+
+          {/* User Menu */}
+          <button style={{
+            backgroundColor: theme.cardBg,
+            border: `2px solid ${theme.cardBorder}`,
+            borderRadius: "50px",
+            padding: "0.8rem 1.2rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            cursor: "pointer",
+            color: theme.text,
+            fontSize: "0.9rem",
+            fontWeight: "500",
+            transition: "all 0.3s ease"
+          }}
+          onClick={()=>{
+            Navigate('/profileCard')
+          }}
+          >
+          
+            <User size={16} />
+            Account
+          </button>
+
+          {/* Logout Button */}
+          <button 
+            onClick={()=>{
+              const logout=async ()=>{
+                 try {
+                  // Call server endpoint to clear httpOnly cookie
+                  await axios.post('http://localhost:3000/auth/isValid/logout/' );
+                  setIsLogin(false);
+                  setUserDetail(null);
+                } catch (error) {
+                  console.error('Logout failed:', error);
+                 }
+              }
+              logout();
+              
+              
+            }}
+            style={{
+              backgroundColor: theme.cardBg,
+              border: `2px solid ${theme.cardBorder}`,
+              borderRadius: "50px",
+              padding: "0.8rem 1.2rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              cursor: "pointer",
+              color: theme.text,
+              fontSize: "0.9rem",
+              fontWeight: "500",
+              transition: "all 0.3s ease"
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#ef4444";
+              e.target.style.borderColor = "#ef4444";
+              e.target.style.color = "#ffffff";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = theme.cardBg;
+              e.target.style.borderColor = theme.cardBorder;
+              e.target.style.color = theme.text;
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "2rem",
+        minHeight: "calc(100vh - 200px)",
+        position: "relative",
+        zIndex: 10
+      }}>
+
+        {/* Welcome Message */}
+        <div style={{
+          textAlign: "center",
+          marginBottom: "3rem",
+          maxWidth: "600px"
+        }}>
+          <h1 style={{
+            fontSize: "2rem",
+            fontWeight: "600",
+            color: theme.text,
+            margin: "0 0 1rem 0",
+            transition: "color 0.3s ease"
+          }}>
+            Where should we begin?
+          </h1>
+          <p style={{
+            fontSize: "1rem",
+            color: theme.textSecondary,
+            margin: "0",
+            transition: "color 0.3s ease"
+          }}>
+            Upload a document or ask me anything to get started
+          </p>
+        </div>
+
+        {/* Input Area */}
+        <div style={{
+          width: "100%",
+          maxWidth: "700px",
+          position: "relative"
+        }}>
+          
+          {/* Hidden File Input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            onChange={handleFileChange}
+            multiple
+            accept=".pdf,.doc,.docx,.txt"
+            style={{ display: "none" }}
+          />
+          
+          {/* Chat Input */}
+          <form onSubmit={handleSubmit}>
+            <div style={{
+              backgroundColor: theme.inputBg,
+              border: `1px solid ${theme.inputBorder}`,
+              borderRadius: "25px",
+              padding: "1rem 1.5rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              boxShadow: isDark 
+                ? "0 4px 20px rgba(0,0,0,0.3)" 
+                : "0 4px 20px rgba(0,0,0,0.1)",
+              transition: "all 0.3s ease"
+            }}>
+              
+              {/* Attach File Button */}
+              <button
+                type="button"
+                onClick={openFileDialog}
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  padding: "0.5rem",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  color: theme.textSecondary,
+                  transition: "all 0.3s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = theme.cardBg;
+                  e.target.style.color = theme.text;
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = "transparent";
+                  e.target.style.color = theme.textSecondary;
+                }}
+              >
+                <Plus size={20} />
+              </button>
+
+              
+
+              {/* Text Input */}
+              <input
+                type="text"
+                placeholder="Ask anything"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                style={{
+                  flex: 1,
+                  backgroundColor: "transparent",
+                  border: "none",
+                  outline: "none",
+                  fontSize: "1rem",
+                  color: theme.text,
+                  fontFamily: "inherit"
+                }}
+              />
+
+              {/* Send Button */}
+              <button
+                type="submit"
+                disabled={!message.trim()}
+                style={{
+                  backgroundColor: message.trim() ? theme.text : theme.textTertiary,
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "36px",
+                  height: "36px",
+                  cursor: message.trim() ? "pointer" : "not-allowed",
+                  color: theme.bg,
+                  transition: "all 0.3s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }
+              }
+             
+              >
+                <ArrowUp size={18} />
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Quick Actions */}
+        <div style={{
+          marginTop: "2rem",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.8rem",
+          justifyContent: "center"
+        }}>
+          {[
+            { 
+              id: 'summarize', 
+              text: 'Summarize document', 
+              description: 'Get a concise summary of your document highlighting the main points and key takeaways'
+            },
+            { 
+              id: 'qa', 
+              text: 'Q & A', 
+              description: 'Ask specific questions about your document and get detailed answers based on the content'
+            },
+            { 
+              id: 'fix', 
+              text: 'Fix PDF text', 
+              description: 'Convert scanned PDFs or images with text into searchable and editable documents'
+            }
+          ].map((action) => (
+            <div key={action.id} style={{ position: 'relative' }}>
+              <button 
+                onClick={() => setSelectedAction(action.id)}
+                style={{
+                  backgroundColor: selectedAction === action.id ? theme.yellow : theme.cardBg,
+                  border: `2px solid ${selectedAction === action.id ? theme.yellow : theme.cardBorder}`,
+                  borderRadius: "25px",
+                  padding: "0.8rem 1.5rem",
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                  color: selectedAction === action.id ? (isDark ? "#1a1a1a" : "#333") : theme.text,
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  boxShadow: selectedAction === action.id ? 
+                    "0 4px 15px rgba(244, 196, 48, 0.3)" : 
+                    (isDark ? "0 4px 20px rgba(0,0,0,0.3)" : "0 4px 20px rgba(0,0,0,0.08)")
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedAction !== action.id) {
+                    e.target.style.backgroundColor = theme.yellow + "20";
+                    e.target.style.borderColor = theme.yellow;
+                  }
+                  // Show tooltip
+                  const tooltip = e.target.nextSibling;
+                  if (tooltip) {
+                    tooltip.style.opacity = "1";
+                    tooltip.style.visibility = "visible";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedAction !== action.id) {
+                    e.target.style.backgroundColor = theme.cardBg;
+                    e.target.style.borderColor = theme.cardBorder;
+                  }
+                  // Hide tooltip
+                  const tooltip = e.target.nextSibling;
+                  if (tooltip) {
+                    tooltip.style.opacity = "0";
+                    tooltip.style.visibility = "hidden";
+                  }
+                }}
+              >
+                {action.text}
+              </button>
+              
+              {/* Tooltip */}
+              <div style={{
+                position: 'absolute',
+                bottom: '100%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                marginBottom: '0.5rem',
+                backgroundColor: theme.cardBg,
+                border: `1px solid ${theme.cardBorder}`,
+                borderRadius: '8px',
+                padding: '0.8rem 1rem',
+                fontSize: '0.8rem',
+                color: theme.textSecondary,
+                width: '250px',
+                textAlign: 'center',
+                boxShadow: isDark ? "0 4px 20px rgba(0,0,0,0.3)" : "0 4px 20px rgba(0,0,0,0.1)",
+                opacity: 0,
+                visibility: 'hidden',
+                transition: 'opacity 0.3s ease, visibility 0.3s ease',
+                zIndex: 1000,
+                pointerEvents: 'none'
+              }}>
+                {action.description}
+                {/* Arrow */}
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: 0,
+                  height: 0,
+                  borderLeft: '6px solid transparent',
+                  borderRight: '6px solid transparent',
+                  borderTop: `6px solid ${theme.cardBorder}`
+                }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+    </Transition>
+  );
+}
+
+export default function WrapperUserPage() {
+  useLogin();
+  const Navigate=useNavigate();
+  const { isLogin, userDetail, error, loading } = useContext(auth);
+  
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontSize: '1.2rem'
+      }}>
+        Loading...
+      </div>
+    );
+  }
+  
+  if (error) {
+    Navigate("/auth");
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontSize: '1.2rem',
+        color: 'red'
+      }}>
+        {error}
+      </div>
+    );
+  }
+  
+  if (!isLogin) {
+    Navigate("/auth");
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontSize: '1.2rem'
+      }}>
+        Please log in to access this page.
+      </div>
+    );
+  }
+  
+  return <UserPage />;
+}
