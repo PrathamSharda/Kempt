@@ -14,7 +14,7 @@ const stateStore = new Map();
 oauthRouter.get("/",(req,res,next)=>
 {
     const state= crypto.randomBytes(32).toString('hex');
-    const redirectURL="http://localhost:3000/auth/LoginWithGoogle/callback";
+    const redirectURL="http://localhost:3001/auth/LoginWithGoogle/callback";
     const ClientId=process.env.CLIENT_ID;
 
     const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${ClientId}&redirect_uri=${redirectURL}&response_type=code&scope=email profile&access_type=offline&prompt=consent&state=${state}`;
@@ -32,7 +32,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
     const code=req.query.code;
     const state=req.query.state;
    
-    const redirectURL="http://localhost:3000/auth/LoginWithGoogle/callback";
+    const redirectURL="http://localhost:3001/auth/LoginWithGoogle/callback";
     try{
         const codeSchema=z.string().min(1);
         const stateSchema=z.string().min(1);

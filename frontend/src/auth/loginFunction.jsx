@@ -12,7 +12,7 @@ export default function useLogout()
     const checkLogin = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3000/auth/isValid/");
+        const response = await axios.get("http://localhost:3001/auth/isValid/");
         console.log(response);
         if (response.data && response.status === 200) {
           setIsLogin(true);

@@ -43,7 +43,7 @@ function Authentication() {
   );
 
   const handleGoogleLogin = () => {
-    window.location.href="http://localhost:3000/auth/LoginWithGoogle/"
+    window.location.href="http://localhost:3001/auth/LoginWithGoogle/"
   };
 
   return (
@@ -588,14 +588,14 @@ function Authentication() {
                     let response;
                     
                     if(!isLogin) {
-                      response = await axios.post('http://localhost:3000/auth/signup', {
+                      response = await axios.post('http://localhost:3001/auth/signup', {
                         email: email.toLowerCase(),
                         password,
                         firstName: firstName.toLowerCase(),
                         lastName: lastName.toLowerCase()
                       });
                     } else {
-                      response = await axios.post('http://localhost:3000/auth/signin', {
+                      response = await axios.post('http://localhost:3001/auth/signin', {
                         email: email.toLowerCase(), // Add toLowerCase here too
                         password,
                       });

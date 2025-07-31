@@ -290,7 +290,7 @@ import axios from "axios"
               const logout=async ()=>{
                  try {
                   // Call server endpoint to clear httpOnly cookie
-                  await axios.post('http://localhost:3000/auth/isValid/logout/' );
+                  await axios.post('http://localhost:3001/auth/isValid/logout/' );
                   setIsLogin(false);
                   setUserDetail(null);
                 } catch (error) {

@@ -11,8 +11,8 @@ const cors=require("cors");
 
 mongoose.connect(mongoID).then(()=>{
     console.log("sucesss")
-    app.listen(3000,()=>{
-    console.log("listening at port 3000");
+    app.listen(3001,()=>{
+    console.log("listening at port "+3001);
 })
 }).catch("error while connecting to mongodb");
 
