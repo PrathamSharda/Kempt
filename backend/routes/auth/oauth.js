@@ -76,7 +76,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
             {
                 headers:
                 {
-                    Authorization:`Bearer${acessToken}`
+                    Authorization:`Bearer ${acessToken}`
                 }
             }
         );
@@ -101,9 +101,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
                 isGoogleUser: true,
                 password: null 
             });
-            user=await userCredentials.findOne({
-                email:g
-            })
+            
         }else{
             user=await userCredentials.updateOne(
                     { email: googleUser.email },
@@ -129,7 +127,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
         res.cookie('token', yourJWT, {
             httpOnly: true,
             secure:true,
-            sameSite: 'strict', 
+            sameSite: 'lax', 
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
@@ -141,7 +139,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
                 lastName:googleUser.lastName
             }
     )
-    res.redirect("http://localhost:5173/home");
+    res.redirect("https://kempt.vercel.app/home");
     }
     catch(error)
     {

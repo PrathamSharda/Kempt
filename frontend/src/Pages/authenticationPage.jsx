@@ -44,6 +44,7 @@ function Authentication() {
 
   const handleGoogleLogin = () => {
     window.location.href="http://localhost:3000/auth/LoginWithGoogle/"
+    
   };
 
   return (
