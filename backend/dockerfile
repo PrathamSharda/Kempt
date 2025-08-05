@@ -1,15 +1,23 @@
-FROM node:20
+
+FROM python:3.11-slim
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y curl
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt-get install -y nodejs
+
 COPY package*.json ./
+COPY requirements.txt ./
 
 RUN npm install
 
+RUN pip install --no-cache-dir -r requirements.txt
+
+
 COPY . .
 
-EXPOSE 3000
 
-CMD ["npm","start"]
+EXPOSE 8080
 
- 
+CMD ["npm", "run", "start"]

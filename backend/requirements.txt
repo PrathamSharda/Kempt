@@ -1,0 +1,15 @@
+aiohttp
+google-cloud-storage
+python-dotenv
+reportlab
+pdf2image
+Pillow
+markdown
+google-cloud-storage
+python-dotenv
+langchain-community
+langchain-text-splitters
+langchain-google-genai
+langchain-chroma
+pypdf
+chromadb
