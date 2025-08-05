@@ -77,10 +77,13 @@ signinRouter.post("/",async (req,res,next)=>
         throw {error:"password provided is wrong", type:"wrong password"};
     }
     const userToken=jwt.sign({
-        email:email,
         id:findingUser._id,
         firstName:findingUser.firstName,
-        LastName:findingUser.lastName,
+        lastName:findingUser.lastName,
+        email:findingUser.email,
+        token:findingUser.token,
+        tokenResetTime:findingUser.tokenResetTime,
+        premiumUser:findingUser.premiumUser
     },jwt_secret,
     {expiresIn:'7d'});
 

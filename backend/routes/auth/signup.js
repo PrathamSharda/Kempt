@@ -56,7 +56,10 @@ signupRouter.post("/",async (req,res,next)=>
         email,
         id:userId._id,
         firstName,
-        lastName
+        lastName,
+        token:userId.token,
+        tokenResetTime:userId.tokenResetTime,
+        premiumUser:userId.premiumUser
     },jwt_secret,
     {expiresIn:'7d'});
 

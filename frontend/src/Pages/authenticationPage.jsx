@@ -1,22 +1,25 @@
 import { useState, useContext } from 'react';
 import { Moon, Sun, User, Lock, Mail, ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import { bgcolor } from '../contexts/context';
+import { bgcolor,auth} from '../contexts/context';
 import { useNavigate } from 'react-router-dom';
 import Transtion from '../transitions/transiton.jsx';
 import axios from 'axios'
-import useLogin from '../auth/loginFunction.jsx';
+import useLogin from '../hooks/loginFunction.jsx';
+import ErrorToast from './Toast.jsx';
+import useErrorToast from '../hooks/useToast.jsx';
 
 
 axios.defaults.withCredentials = true;
 function Authentication() {
   const { isDark, setIsDark } = useContext(bgcolor);
-  const [isLogin, setIsLogin] = useState(true);
+  const {isLogin,setIsLogin,userDetail,setUserDetail,error,setError,loading,setLoading}=useContext(auth)
   const [showPassword, setShowPassword] = useState(false);
   const [password,Setpassword]=useState('');
   const [email,Setemail]=useState('');
   const [firstName,SetfirstName]=useState('');
   const [lastName,SetlastName]=useState('');
   const navigate = useNavigate();
+  const { errorforToast, seterrorforToast, hideError }=useErrorToast();
 
   const theme = {
     bg: isDark ? "#1a1a1a" : "#f5f5f5",
@@ -48,6 +51,12 @@ function Authentication() {
 
   return (
     <Transtion>
+      {errorforToast && (
+      <ErrorToast 
+        message={JSON.stringify(errorforToast)} 
+        onClose={hideError}
+      />
+    )}
     <div style={{
       minHeight: "100vh",
       width: "100%",
@@ -390,7 +399,7 @@ function Authentication() {
                       }}
                       onChange={(e)=>{
                         SetfirstName(e.target.value);
-                        console.log(firstName);
+                        //console.log(firstName);
                       }}
                       onFocus={(e) => {
                         e.target.style.borderColor = theme.yellow;
@@ -435,7 +444,7 @@ function Authentication() {
                       }}
                       onChange={(e)=>{
                         SetlastName(e.target.value);
-                        console.log(lastName);
+                       // console.log(lastName);
                       }}
                       onFocus={(e) => {
                         e.target.style.borderColor = theme.yellow;
@@ -483,7 +492,7 @@ function Authentication() {
                   }}
                       onChange={(e)=>{
                         Setemail(e.target.value);
-                        console.log(email);
+                        //console.log(email);
                       }}
                   onFocus={(e) => {
                     e.target.style.borderColor = theme.yellow;
@@ -529,7 +538,7 @@ function Authentication() {
                   }}
                   onChange={(e)=>{
                     Setpassword(e.target.value);
-                    console.log(password);
+                   // console.log(password);
                   }}
                   onFocus={(e) => {
                     e.target.style.borderColor = theme.yellow;
@@ -582,7 +591,7 @@ function Authentication() {
               }}
               onClick={async(e) => {
                   e.preventDefault();
-                  console.log(email,firstName,lastName,password);
+                 // console.log(email,firstName,lastName,password);
                   
                   try {
                     let response;
@@ -602,12 +611,12 @@ function Authentication() {
                     }
 
                     
-                    console.log('Success:', response);
+                    //console.log('Success:', response);
                     navigate('/home')
                     
                   } catch (error) {
-                    console.error('Error:', error.response?.data || error.message);
-                   navigate('/auth');
+                   seterrorforToast(error.response?.data || error.message);
+                   
                   }
                  
               }}

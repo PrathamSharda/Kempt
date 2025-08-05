@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { bgcolor } from '../contexts/context';
 import Transtion from '../transitions/transiton.jsx';
 import { auth } from '../contexts/context';
-import useLogin from '../auth/loginFunction.jsx';
+import useLogin from '../hooks/loginFunction.jsx';
 
 function LandingPage() {
    

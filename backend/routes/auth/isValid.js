@@ -34,7 +34,10 @@ isValid.get("/",async (req,res,next)=>{
          res.json({
             firstName:gettingUser.firstName,
             lastName:gettingUser.lastName,
-            email:gettingUser.email
+            email:gettingUser.email,
+            token:gettingUser.token,
+            tokenResetTime:gettingUser.tokenResetTime,
+            premiumUser:gettingUser.premiumUser
         });
     }
     catch(error)
