@@ -13,6 +13,11 @@ const credentials = new schema({
       return !this.isGoogleUser;
     }
   },
+  token:{type:Number, default:5},
+  tokenResetTime: { 
+    type: Date, 
+    default: () => new Date(Date.now() + 8 * 60 * 60 * 1000)
+  },
   isGoogleUser: { type: Boolean, default: false },
   premiumUser: { type: Boolean, required: true, default: false }
 });

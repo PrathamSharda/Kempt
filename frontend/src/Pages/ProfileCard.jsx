@@ -3,15 +3,17 @@ import { useState ,useContext} from 'react';
 import { bgcolor } from '../contexts/context';
 import {useNavigate} from 'react-router-dom'
 import Transition from '../transitions/transiton';
-import useLogin from '../auth/loginFunction.jsx';
+import useLogin from '../hooks/loginFunction.jsx';
 import { auth } from '../contexts/context';
+import ErrorToast from './Toast.jsx';
+import useErrorToast from '../hooks/useToast.jsx';
 
 
 function ProfileCard() {
   const {isDark, setIsDark} = useContext(bgcolor);
   const Navigate=useNavigate();
   const {userDetail}=useContext(auth);
-  console.log(userDetail);
+  //console.log(userDetail);
   const theme = {
     bg: isDark ? "#1a1a1a" : "#f5f5f5",
     text: isDark ? "#ffffff" : "#333333",
@@ -21,18 +23,43 @@ function ProfileCard() {
     circle2: isDark ? "#333333" : "#d5d5d5",
     circle3: isDark ? "#252525" : "#e8e8e8",
     yellow: "#f4c430",
+    red:"#d82f2fff",
     cardBg: isDark ? "#252525" : "#ffffff",
     cardBorder: isDark ? "#333333" : "#e0e0e0",
     green: "#4ade80",
     blue: "#3b82f6"
   };
 
-  // Sample user data
+  // Fix the premium user check - use userDetail.premiumUser instead of hardcoded false
+  const isPremium = userDetail.premiumUser;
+  
+  // Fix the time reset calculation
+  let formatted = "N/A";
+  if(userDetail.tokenResetTime !== null) {
+    const resetTime = new Date(userDetail.tokenResetTime);
+    const now = new Date();
+    
+    // Calculate hours until reset
+    const timeDiff = resetTime - now;
+    const hoursUntilReset = Math.ceil(timeDiff / (1000 * 60 * 60));
+    
+    if (hoursUntilReset > 0 && hoursUntilReset <= 24) {
+      formatted = `in ${hoursUntilReset}h`;
+    } else if (timeDiff > 0) {
+      // More than 24 hours, show days
+      const daysUntilReset = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      formatted = `in ${daysUntilReset}d`;
+    } else {
+      // If reset time has passed, show "soon" or actual time
+      formatted = "soon";
+    }
+  }
+
   const userData = {
     name: `${userDetail.firstName} ${userDetail.lastName}`,
-    tokensLeft: 3,
-    dailyLimit: 5,
-    isPremium: false,
+    tokensLeft: userDetail.token,
+    isPremium: isPremium, // Use the actual premium status
+    dailyLimit: isPremium ? 30 : 5,
     memberSince: "The creator"
   };
 
@@ -107,10 +134,9 @@ function ProfileCard() {
       }}>
         <button
           onClick={() => {
-            // Navigate back or to dashboard
+           
             Navigate(-1);
-            console.log('Navigate back');
-            // In your app: navigate(-1) or navigate('/dashboard')
+            
           }}
           style={{
             backgroundColor: theme.cardBg,
@@ -127,8 +153,7 @@ function ProfileCard() {
             transition: "all 0.3s ease"
           }}
           onMouseEnter={(e) => {
-            e.target.style.backgroundColor = theme.yellow;
-            e.target.style.color = isDark ? "#1a1a1a" : "#333333";
+            e.target.style.color = isDark ? "white" : "#333333";
           }}
           onMouseLeave={(e) => {
             e.target.style.backgroundColor = theme.cardBg;
@@ -280,7 +305,7 @@ function ProfileCard() {
                   {userData.name}
                 </h2>
                 
-                {userData.isPremium && (
+                {isPremium && (
                   <div style={{
                     backgroundColor: theme.yellow,
                     borderRadius: "12px",
@@ -300,15 +325,6 @@ function ProfileCard() {
                   </div>
                 )}
               </div>
-              
-              <p style={{
-                fontSize: "0.9rem",
-                color: theme.textSecondary,
-                margin: 0,
-                transition: "color 0.3s ease"
-              }}>
-                Member since {userData.memberSince}
-              </p>
             </div>
           </div>
           
@@ -393,7 +409,7 @@ function ProfileCard() {
                   color: theme.textSecondary,
                   transition: "color 0.3s ease"
                 }}>
-                  Resets in 8h
+                  Resets {formatted}
                 </span>
               </div>
             </div>
@@ -432,7 +448,7 @@ function ProfileCard() {
               <div style={{
                 width: `${tokenPercentage}%`,
                 height: "100%",
-                backgroundColor: tokenPercentage > 20 ? theme.green : theme.yellow,
+                backgroundColor: tokenPercentage > 20 ? theme.green : theme.red,
                 borderRadius: "4px",
                 transition: "all 0.3s ease"
               }} />
@@ -444,51 +460,51 @@ function ProfileCard() {
               margin: "0.5rem 0 0 0",
               transition: "color 0.3s ease"
             }}>
-              {tokenPercentage > 20 
-                ? "You're doing great! Plenty of tokens left." 
-                : "Running low on tokens. Consider upgrading for unlimited access."}
+              {isPremium 
+                ? "Premium user - Enjoy unlimited access!" 
+                : tokenPercentage > 20 
+                  ? "You're doing great! Plenty of tokens left." 
+                  : "Running low on tokens. Consider upgrading for unlimited access."}
             </p>
           </div>
           
-          {/* Buy Premium Button */}
-          <div style={{
-            marginTop: "1.5rem",
-            textAlign: "center",
-            position: "relative",
-            zIndex: 2
-          }}>
-            <button
-              onClick={() => {
-                // Navigate to premium page
-                console.log('Navigate to /premium');
-                // In your app: navigate('/premium')
-              }}
-              style={{
-                backgroundColor: theme.yellow,
-                color: isDark ? "#1a1a1a" : "#333",
-                border: "none",
-                borderRadius: "50px",
-                padding: "1rem 2.5rem",
-                fontSize: "1.1rem",
-                fontWeight: "600",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                boxShadow: "0 4px 15px rgba(244, 196, 48, 0.3)",
-                width: "100%"
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = "translateY(-2px)";
-                e.target.style.boxShadow = "0 6px 20px rgba(244, 196, 48, 0.4)";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = "translateY(0)";
-                e.target.style.boxShadow = "0 4px 15px rgba(244, 196, 48, 0.3)";
-              }}
-            >
-              {userData.isPremium ? "Manage Premium" : "Buy Premium"}
-            </button>
-            
-            {!userData.isPremium && (
+          {/* Buy Premium Button - Only show if user is NOT premium */}
+          {!isPremium && (
+            <div style={{
+              marginTop: "1.5rem",
+              textAlign: "center",
+              position: "relative",
+              zIndex: 2
+            }}>
+              <button
+                onClick={() => {
+                  Navigate("/buyPremium");
+                }}
+                style={{
+                  backgroundColor: theme.yellow,
+                  color: isDark ? "#1a1a1a" : "#333",
+                  border: "none",
+                  borderRadius: "50px",
+                  padding: "1rem 2.5rem",
+                  fontSize: "1.1rem",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  boxShadow: "0 4px 15px rgba(244, 196, 48, 0.3)",
+                  width: "100%"
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(244, 196, 48, 0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(244, 196, 48, 0.3)";
+                }}
+              >
+                Buy Premium
+              </button>
+              
               <p style={{
                 fontSize: "0.8rem",
                 color: theme.textTertiary,
@@ -497,8 +513,48 @@ function ProfileCard() {
               }}>
                 Get unlimited tokens and exclusive features
               </p>
-            )}
-          </div>
+            </div>
+          )}
+
+          {/* Premium Status Message - Show if user IS premium */}
+          {isPremium && (
+            <div style={{
+              marginTop: "1.5rem",
+              textAlign: "center",
+              position: "relative",
+              zIndex: 2,
+              backgroundColor: isDark ? "#2a2a2a" : "#f0f9ff",
+              borderRadius: "16px",
+              padding: "1.5rem",
+              border: `2px solid ${theme.yellow}`
+            }}>
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+                marginBottom: "0.5rem"
+              }}>
+                <Crown size={20} color={theme.yellow} />
+                <span style={{
+                  fontSize: "1.1rem",
+                  fontWeight: "600",
+                  color: theme.text,
+                  transition: "color 0.3s ease"
+                }}>
+                  Premium Active
+                </span>
+              </div>
+              <p style={{
+                fontSize: "0.9rem",
+                color: theme.textSecondary,
+                margin: 0,
+                transition: "color 0.3s ease"
+              }}>
+                Enjoying unlimited tokens and exclusive features
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -511,16 +567,18 @@ export default function WrapperProfileCard()
   useLogin();
   const navigate=useNavigate();
   const {isLogin,error,loading}=useContext(auth);
+  const {errorforToast,seterrorforToast,hideError}=useErrorToast();
   if(!isLogin)
   {
     navigate("/auth");
   }
   if(error!=null)
   {
-    return(
-      <div>
-        {error}
-      </div>
+    
+      navigate("/auth");
+      seterrorforToast(error.response?.data || error.message);
+      return(
+      <ErrorToast message={errorforToast} onClose={hideError}/>
     )
   }
   if(loading)

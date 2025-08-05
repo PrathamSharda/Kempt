@@ -1,4 +1,5 @@
 .slide-in.transition-complete {
+  background-color:#333;
   position: relative;
   height: auto;
   min-height: 100vh;
@@ -6,6 +7,7 @@
   background: transparent;
 }
 .slide-out{
+    background-color:#333;
   position:fixed;
   top:0;
   left:0;
