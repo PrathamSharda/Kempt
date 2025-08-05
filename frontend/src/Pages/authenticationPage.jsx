@@ -47,7 +47,7 @@ function Authentication() {
 
   const handleGoogleLogin = () => {
     window.location.href="http://localhost:3001/auth/LoginWithGoogle/"
-  };
+
 
   return (
     <Transtion>
