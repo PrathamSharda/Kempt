@@ -203,7 +203,7 @@ function UserPage() {
   
     // Call the backend
     const response=await chatBackendCaller(
-      `http://localhost:3001/user/${selectedAction}`,
+      `https://kempt-1017350567380.europe-west1.run.app/user/${selectedAction}`,
       formData, 
       setMessage,
       setLoading
@@ -442,7 +442,7 @@ function UserPage() {
               onClick={() => {
                 const logout = async () => {
                   try {
-                    await axios.post('http://localhost:3001/auth/isValid/logout/');
+                    await axios.post('https://kempt-1017350567380.europe-west1.run.app/auth/isValid/logout/');
                     setIsLogin(false);
                     setUserDetail(null);
                   } catch (error) {

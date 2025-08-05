@@ -10,7 +10,7 @@ import useErrorToast from '../hooks/useToast.jsx';
 
 
 axios.defaults.withCredentials = true;
-function Authentication() {
+export default function Authentication() {
   const { isDark, setIsDark } = useContext(bgcolor);
   const {isLogin,setIsLogin,userDetail,setUserDetail,error,setError,loading,setLoading}=useContext(auth)
   const [showPassword, setShowPassword] = useState(false);
@@ -46,7 +46,7 @@ function Authentication() {
   );
 
   const handleGoogleLogin = () => {
-    window.location.href="http://localhost:3001/auth/LoginWithGoogle/"
+    window.location.href="https://kempt-1017350567380.europe-west1.run.app/auth/LoginWithGoogle/"
   };
 
   return (
@@ -638,5 +638,4 @@ function Authentication() {
   </Transtion>
   );
 }
-
-export default Authentication;
+ 

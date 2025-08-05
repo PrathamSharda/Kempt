@@ -11,7 +11,7 @@ export default function useLogin()
     const checkLogin = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3001/auth/isValid/");
+        const response = await axios.get("https://kempt-1017350567380.europe-west1.run.app/auth/isValid/");
 
         if (response.data && response.status === 200) {
           setIsLogin(true);
