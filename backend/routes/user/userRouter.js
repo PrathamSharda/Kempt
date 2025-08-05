@@ -10,6 +10,8 @@ const jwt=require("jsonwebtoken")
 const jwt_secret=process.env.jwt_secret;
 const{ TokenReducer,TokenResetter}=require("./TokenChecker")
 
+
+
 userRouter.use("/",async (req,res,next)=>{
     try{
     const Token=req.cookies.token;

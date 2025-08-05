@@ -55,12 +55,12 @@ summarizeRouter.post("/",upload.array("files"),async (req,res,next)=>{
        const ans = results.map((parts)=>{
             return `\n\nSummary:${parts.summary} ${parts.keywords?("\n\nKeywords:"+parts.keywords):""}`
        })
-       console.log(ans);
+     //  console.log(ans);
     res.json({
         message:ans
     }
     )
-    console.log("summarize")
+   // console.log("summarize")
   }catch (error) {
     console.log(error);
     res.status(500).json({ 

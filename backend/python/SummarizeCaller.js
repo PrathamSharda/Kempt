@@ -26,7 +26,7 @@ async function DonwloadFromGcs(CloudFilePath)
     if (!gcsMatch) {
       throw new Error('Invalid GCS path format. Expected: gs://bucket-name/path/to/file');
     }
-    console.log(gcsMatch)
+   // console.log(gcsMatch)
     const bucketName=gcsMatch[1];
     const FileName=gcsMatch[2]; 
     const tempDir=path.join(__dirname,"../../FileStorage");

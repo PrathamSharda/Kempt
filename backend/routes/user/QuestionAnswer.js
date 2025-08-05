@@ -39,7 +39,7 @@ qandaRouter.post("/", upload.array("files"), async (req, res, next) => {
         const files = req.files; 
         const prompt = req.body.prompt;
         const email=req.email;
-        console.log(email);
+        //console.log(email);
         if (!prompt || prompt.trim() === "") {
            throw { error: "Question not provided" };
         }
@@ -63,7 +63,7 @@ qandaRouter.post("/", upload.array("files"), async (req, res, next) => {
             ans = await RagCaller(null, prompt,email);
         }
         
-        console.log("QA processing completed");
+        //console.log("QA processing completed");
         
         res.json({
             message: ans

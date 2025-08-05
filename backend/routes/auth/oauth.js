@@ -113,7 +113,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
             email: profileRes.data.email,
             
         };
-        console.log(googleUser);
+        // console.log(googleUser);
         let user = await userCredentials.findOne({ email: googleUser.email });
         if (!user) {
             user = await userCredentials.create({
@@ -156,14 +156,14 @@ oauthRouter.get("/callback",async (req,res,next)=>
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-        console.log("google user",
-           { 
-                id: user._id, 
-                email: user.email,
-                firstName:googleUser.firstName,
-                lastName:googleUser.lastName
-            }
-    )
+    //   //  console.log("google user",
+    //        { 
+    //             id: user._id, 
+    //             email: user.email,
+    //             firstName:googleUser.firstName,
+    //             lastName:googleUser.lastName
+    //         }
+    // )
     res.redirect("http://localhost:5173/home");
     }
     catch(error)

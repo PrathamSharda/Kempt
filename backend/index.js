@@ -3,17 +3,20 @@ const cookieParser=require("cookie-parser");
 const app=express();
 const mongoose=require("mongoose");
 const dotenv=require("dotenv");
-dotenv.config();
-const mongoID=process.env.mongoID;
 const {authRouter}=require('./routes/auth/authRouter')
 const cors=require("cors");
 const {userRouter} =require("./routes/user/userRouter")
 const { rateLimit } =require('express-rate-limit')
 
+dotenv.config();
+const mongoID=process.env.mongoID;
+const PORT=process.env.PORT||8080;
+
+
 mongoose.connect(mongoID).then(()=>{
     console.log("sucesss")
-    app.listen(3001,()=>{
-    console.log("listening at port "+3001);
+    app.listen(PORT,()=>{
+    console.log("listening at port "+PORT);
 })
 }).catch("error while connecting to mongodb");
 

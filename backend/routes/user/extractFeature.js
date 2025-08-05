@@ -57,7 +57,7 @@ featureExtractRouter.post("/",upload.array("files"),async (req,res,next)=>{
         const files=req.files;
         if(files===null||files.length==0 )
         {
-          console.log("here throw");
+         // console.log("here throw");
             throw {error:"files are sent for excution ",type:"no file error"};
             
         }
@@ -79,9 +79,9 @@ featureExtractRouter.post("/",upload.array("files"),async (req,res,next)=>{
       });
     const returnArray = await Promise.all(promisesURL);
 
-       console.log(returnArray);
-      console.log("done");
-      console.log("fix")
+      // console.log(returnArray);
+      // console.log("done");
+      // console.log("fix")
         res.json({
             message:returnArray
         })

@@ -16,7 +16,7 @@ async function TokenReducer(email) {
         }
 
         totalToken = totalToken - 1;
-        console.log(`Tokens remaining: ${totalToken}`);
+      //  console.log(`Tokens remaining: ${totalToken}`);
 
         let updateData = { token: totalToken };
    
@@ -48,7 +48,7 @@ async function TokenResetter(email) {
         let totalToken = user.token;
         let tokenResetTime = user.tokenResetTime;
         
-        console.log(`Current tokens: ${totalToken}, Reset time: ${tokenResetTime}`);
+       // console.log(`Current tokens: ${totalToken}, Reset time: ${tokenResetTime}`);
 
         if (totalToken === 0 && tokenResetTime && new Date() >= tokenResetTime) {
 
