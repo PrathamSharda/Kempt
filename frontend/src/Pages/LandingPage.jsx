@@ -460,7 +460,8 @@ function LandingPage() {
     </Transtion>
   );
 }
-function WrapperLandingPage()
+
+export default function WrapperLandingPage()
 {
   useLogin();
    const {isLogin,setIsLogin,userDetail,setUserDetail,error,setError,loading,setLoading} =useContext(auth);
@@ -488,4 +489,3 @@ function WrapperLandingPage()
 
   navigate("/home");
 }
-export default WrapperLandingPage ;

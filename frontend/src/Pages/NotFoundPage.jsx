@@ -4,7 +4,7 @@ import { bgcolor } from '../contexts/context';
 import { useNavigate } from 'react-router-dom';
 import Transition from '../transitions/transiton';
 
-function NotFoundPage() {
+export default function NotFoundPage() {
   const { isDark, setIsDark } = useContext(bgcolor);
   const navigate = useNavigate();
   
@@ -212,4 +212,3 @@ function NotFoundPage() {
   );
 }
 
-export default NotFoundPage;

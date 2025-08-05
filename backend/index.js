@@ -32,7 +32,7 @@ const limiter = rateLimit({
 
 app.use(limiter)
 app.use(cors({
-    origin:'https://kempt.vercel.app/',
+    origin:['http://localhost:5173',"https://kempt.vercel.app"],
     credentials:true
 }));
 app.use(express.json());
