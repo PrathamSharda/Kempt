@@ -556,7 +556,6 @@ def is_valid_pdf(file_path):
 async def pdf_to_image(file_path):
     ans = {}
     is_valid, validation_msg = is_valid_pdf(file_path)
-    print(is_valid)
     if not is_valid:
         return ans
     
