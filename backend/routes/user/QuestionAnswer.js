@@ -71,8 +71,8 @@ qandaRouter.post("/", upload.array("files"), async (req, res, next) => {
         
     } catch (error) {
         console.error("Error in Q&A processing:", error);
-        res.status(500).json({ 
-            error: "Internal server error", 
+        res.status(400).json({ 
+            error: error, 
             details: error.message 
         });
     }

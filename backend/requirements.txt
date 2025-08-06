@@ -6,6 +6,7 @@ poppler-utils
 pdf2image
 Pillow
 markdown
+weasyprint
 python-dotenv
 langchain-community
 langchain-text-splitters
