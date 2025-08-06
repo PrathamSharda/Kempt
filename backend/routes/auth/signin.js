@@ -87,12 +87,13 @@ signinRouter.post("/",async (req,res,next)=>
     },jwt_secret,
     {expiresIn:'7d'});
 
-    res.cookie("token",userToken,{
-        httpOnly: true,
-        secure:true,
-        sameSite:'none',
-        maxAge: 7 * 24 * 60 * 60 * 1000
-    })
+    // res.cookie("token",userToken,{
+    //     httpOnly: true,
+    //     secure:true,
+    //     sameSite:'none',
+    //     maxAge: 7 * 24 * 60 * 60 * 1000
+    // })
+    res.redirect(`https://kempt.vercel.app/auth/callback?token=${encodeURIcomponent(userToken)}`);
     res.json({
         output:"user logged in sucessfully"
     })

@@ -63,12 +63,13 @@ signupRouter.post("/",async (req,res,next)=>
     },jwt_secret,
     {expiresIn:'7d'});
 
-    res.cookie("token",token,{
-        httpOnly: true,
-            secure:true,
-            sameSite: 'none', 
-            maxAge: 7 * 24 * 60 * 60 * 1000 
-    })
+    // res.cookie("token",token,{
+    //     httpOnly: true,
+    //         secure:true,
+    //         sameSite: 'none', 
+    //         maxAge: 7 * 24 * 60 * 60 * 1000 
+    // })
+    res.redirect(`https://kempt.vercel.app/auth/callback?token=${encodeURIcomponent(token)}`);
     res.json({
         output:"this user is created"
     });
