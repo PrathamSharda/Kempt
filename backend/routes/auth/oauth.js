@@ -152,7 +152,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
         res.cookie('token', yourJWT, {
             httpOnly: true,
             secure:true,
-            sameSite: 'strict', 
+            sameSite: 'none', 
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
