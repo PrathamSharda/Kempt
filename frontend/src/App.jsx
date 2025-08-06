@@ -10,6 +10,8 @@ import Authentication from './Pages/authenticationPage'
 import Chat from './Pages/chatPage'
 import NotFoundPage from "../src/Pages/NotFoundPage"
 import WrapperBuyPremiumPage from "../src/Pages/premiumPage"
+import AuthCallback from "../src/Pages/authCallback"
+
 function App() {
   const [isDark,setIsDark]=useState(true);
   const [isLogin,setIsLogin]=useState(false);
@@ -62,6 +64,7 @@ function Approuter()
           <Route path="/auth" element={<Authentication/>}/>
           <Route path="/home" element={<UserPage/>}/>
           <Route path="/chat" element={<Chat/>}/>
+          <Route path="/auth/callback" element={<AuthCallback/>}/>
           <Route path="/profileCard" element={<ProfileCard/>}/>
           <Route path='/buyPremium' element={<WrapperBuyPremiumPage/>}/>
           <Route path="*"element={<NotFoundPage/>}/>
