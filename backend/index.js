@@ -33,7 +33,6 @@ const limiter = rateLimit({
 })
 
 app.use(cookieParser());
-app.use(csrf({ cookie: true }));
 app.use(limiter)
 app.use(cors({
     origin:['http://localhost:5173',"https://kempt.vercel.app"],
