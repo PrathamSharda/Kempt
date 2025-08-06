@@ -9,7 +9,7 @@ import axios from "axios"
 import ErrorToast from './Toast';
 import useErrorToast from '../hooks/useToast';
 import useChatBackend from "../hooks/ChatBackend"
-
+import LogoutCallback from "../hooks/logoutCallback"
 
 function UserPage() {
   const cookies = new Cookies();
@@ -26,7 +26,26 @@ function UserPage() {
   const { errorforToast, seterrorforToast, hideError } = useErrorToast();
   const{chatBackendCaller}=useChatBackend();
   const [text,setText]=useState("Where should we begin?")
- 
+  const[isLogout,setIsLogout]=useState(false);
+
+   useEffect(() => {
+        const logout = () => {
+          if(isLogout)
+          {
+          try{
+            document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            setIsLogout(false);
+            Navigate('/auth', { replace: true });
+          
+          }catch(Error)
+          {
+            seterrorforToast(`could not logout try again later `)
+          }
+        }
+        };
+        
+        logout();
+    }, [isLogout]);
 
   useEffect(()=>{
 
@@ -440,17 +459,8 @@ function UserPage() {
             {/* Logout Button */}
             <button 
               onClick={() => {
-                const logout = async () => {
-                  try {
-                    await axios.post('https://kempt-1017350567380.europe-west1.run.app/auth/isValid/logout/');
-                    setIsLogin(false);
-                    setUserDetail(null);
-                  } catch (error) {
-                    console.error('Logout failed:', error);
-                  }
-                }
-                logout();
-              }}
+                setIsLogout(true);
+                }}
               style={{
                 backgroundColor: theme.cardBg,
                 border: `2px solid ${theme.cardBorder}`,

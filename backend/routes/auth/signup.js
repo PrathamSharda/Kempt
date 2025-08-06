@@ -69,13 +69,15 @@ signupRouter.post("/",async (req,res,next)=>
     //         sameSite: 'none', 
     //         maxAge: 7 * 24 * 60 * 60 * 1000 
     // })
-    res.redirect(`https://kempt.vercel.app/auth/callback?token=${encodeURIcomponent(token)}`);
     res.json({
-        output:"this user is created"
-    });
+        token:token,
+        message:"created successfully"
+    })
+
     }
     catch(error)
     {
+        console.log(error);
         res.status(503).send(error);
     }
 })

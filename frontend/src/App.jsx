@@ -11,6 +11,8 @@ import Chat from './Pages/chatPage'
 import NotFoundPage from "../src/Pages/NotFoundPage"
 import WrapperBuyPremiumPage from "../src/Pages/premiumPage"
 import AuthCallback from "../src/Pages/authCallback"
+import LogoutCallback from "./hooks/logoutCallback"
+
 
 function App() {
   const [isDark,setIsDark]=useState(true);
@@ -65,6 +67,7 @@ function Approuter()
           <Route path="/home" element={<UserPage/>}/>
           <Route path="/chat" element={<Chat/>}/>
           <Route path="/auth/callback" element={<AuthCallback/>}/>
+          <Route path="/logout/callback" element={<LogoutCallback/>}/>
           <Route path="/profileCard" element={<ProfileCard/>}/>
           <Route path='/buyPremium' element={<WrapperBuyPremiumPage/>}/>
           <Route path="*"element={<NotFoundPage/>}/>

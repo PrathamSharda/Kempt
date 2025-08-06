@@ -11,9 +11,19 @@ export default function useLogin()
     const checkLogin = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("https://kempt-1017350567380.europe-west1.run.app/auth/isValid/",{
-            withCredentials: true,
+        const token = document.cookie.split('token=')[1]?.split(';')[0];
+        
+        if (!token) {
+          setIsLogin(false);
+          setError("No token found");
+          return;
+        }
+        const response = await axios.get("https://kempt-1017350567380.europe-west1.run.app/auth/isValid/", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
+
 
         if (response.data && response.status === 200) {
           setIsLogin(true);
