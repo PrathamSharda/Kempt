@@ -10,9 +10,11 @@ function AuthCallback() {
         
         if (token) {
             document.cookie = `token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=none`;
+
             navigate('/home', { replace: true });
         } else {
-            navigate('/auth', { replace: true });
+
+            navigate('/login', { replace: true });
         }
     }, [navigate]);
     

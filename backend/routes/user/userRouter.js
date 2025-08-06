@@ -14,7 +14,7 @@ const{ TokenReducer,TokenResetter}=require("./TokenChecker")
 
 userRouter.use("/",async (req,res,next)=>{
     try{
-    const Token=req.cookies.token;
+    const Token = req.cookies.token || req.headers.authorization?.split(' ')[1];
     const user=jwt.decode(Token);
     const email=user.email;
     const val2=await TokenResetter(email);

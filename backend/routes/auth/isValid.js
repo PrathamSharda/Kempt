@@ -15,7 +15,7 @@ isValid.get("/",async (req,res,next)=>{
         if (!allowedOrigins.includes(origin)) {
         throw {error: "Unauthorized origin", type: "security violation"};
         }
-        const token=req.cookies.token;
+        const token=req.cookies.token|| req.headers.authorization?.split(' ')[1];
         if(token==undefined){
             throw {error:"token not found",type:"login failed"};
         }
@@ -51,18 +51,6 @@ isValid.get("/",async (req,res,next)=>{
     }
 });
 
-isValid.post("/logout",async (req,res,next)=>{
-    try{
-
-        res.clearCookie("token");
-        res.send("success");
-
-    }
-    catch(error)
-    {
-        res.status(400).send(error);
-    }
-});
 module.exports={
     isValid
 }

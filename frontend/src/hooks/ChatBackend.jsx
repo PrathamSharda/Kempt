@@ -18,14 +18,13 @@ export default function useChatBackend()
                 userDetail.token=userDetail.token-1;
             }
 
+            const token = document.cookie.split('token=')[1]?.split(';')[0];
             const response = await axios.post(url, formData, {
-            withCredentials: true,
-            headers: {
-                "Content-Type": "multipart/form-data",
-                    
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
                 }
-
-            })
+            });
            
             if(response.status!=200)throw {error:"communication with backend couldnt be established"};
             

@@ -29,7 +29,7 @@ async function DonwloadFromGcs(CloudFilePath)
    // console.log(gcsMatch)
     const bucketName=gcsMatch[1];
     const FileName=gcsMatch[2]; 
-    const tempDir=path.join(__dirname,"../../FileStorage");
+    const tempDir=os.tmpdir();
     const localFileName=path.basename(FileName);
     const localFilePath=path.join(tempDir,localFileName)
 

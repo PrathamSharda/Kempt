@@ -610,11 +610,9 @@ export default function Authentication() {
                         email: email.toLowerCase(), // Add toLowerCase here too
                         password,
                       });
+                      
                     }
-
-                    
-                    //console.log('Success:', response);
-                    navigate('/home')
+                    navigate(`/auth/callback?token=${response.data.token}`)
                     
                   } catch (error) {
                    seterrorforToast(error.response?.data || error.message);
