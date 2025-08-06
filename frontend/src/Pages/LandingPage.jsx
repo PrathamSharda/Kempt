@@ -465,6 +465,7 @@ export default function WrapperLandingPage()
 {
   useLogin();
    const {isLogin,setIsLogin,userDetail,setUserDetail,error,setError,loading,setLoading} =useContext(auth);
+   const {isDark, setIsDark} = useContext(bgcolor);
   const navigate = useNavigate();
   if(!isLogin)
   {

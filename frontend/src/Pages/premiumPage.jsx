@@ -595,7 +595,7 @@ export default function WrapperBuyPremiumPage() {
   const navigate = useNavigate();
   const { isLogin, error, loading } = useContext(auth);
   const { errorforToast, seterrorforToast, hideError } = useErrorToast();
-  
+  const {isDark, setIsDark} = useContext(bgcolor);
   if (!isLogin) {
     navigate("/auth");
   }
