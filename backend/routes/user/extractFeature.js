@@ -8,9 +8,7 @@ const {PythonFileCaller}=require("../../python/OCRcaller")
 
 
 featureExtractRouter.use(express.urlencoded({extended:false}));
-const gcs = new Storage({
-    projectId: process.env.GCP_PROJECT_ID || 'your-default-project-id'
-});
+const gcs = new Storage();
 
 const bucket = gcs.bucket("kemptstorage");
 const uploadToGCS = (file) => {
