@@ -4,3 +4,10 @@
     box-sizing: border-box;
 
 }
+html, body {
+  min-width: 1000px;
+}
+
+#root {
+  min-width: 1000px;
+}
