@@ -7,6 +7,8 @@ const {authRouter}=require('./routes/auth/authRouter')
 const cors=require("cors");
 const {userRouter} =require("./routes/user/userRouter")
 const { rateLimit } =require('express-rate-limit')
+const csrf = require('csurf');
+
 
 dotenv.config();
 const mongoID=process.env.mongoID;
@@ -30,6 +32,7 @@ const limiter = rateLimit({
 	ipv6Subnet: 56
 })
 
+app.use(csrf({ cookie: true }));
 app.use(limiter)
 app.use(cors({
     origin:['http://localhost:5173',"https://kempt.vercel.app"],

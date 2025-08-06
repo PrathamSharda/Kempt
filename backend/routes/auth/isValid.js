@@ -9,7 +9,12 @@ const jwt_secret=process.env.jwt_secret;
 
 isValid.get("/",async (req,res,next)=>{
     try{
-
+        const allowedOrigins = ['https://kempt.vercel.app', 'http://localhost:5173'];
+        const origin = req.headers.origin;
+        
+        if (!allowedOrigins.includes(origin)) {
+        throw {error: "Unauthorized origin", type: "security violation"};
+        }
         const token=req.cookies.token;
         if(token==undefined){
             throw {error:"token not found",type:"login failed"};
