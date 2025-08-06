@@ -32,6 +32,7 @@ const limiter = rateLimit({
 	ipv6Subnet: 56
 })
 
+app.use(cookieParser());
 app.use(csrf({ cookie: true }));
 app.use(limiter)
 app.use(cors({
@@ -39,6 +40,5 @@ app.use(cors({
     credentials:true
 }));
 app.use(express.json());
-app.use(cookieParser());
 app.use("/auth",authRouter)
 app.use("/user",userRouter);
