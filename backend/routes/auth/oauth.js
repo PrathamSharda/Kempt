@@ -98,7 +98,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
             {
                 headers:
                 {
-                    Authorization:`Bearer ${acessToken}`
+                    Authorization:`Bearer${acessToken}`
                 }
             }
         );
