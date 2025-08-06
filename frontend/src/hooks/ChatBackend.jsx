@@ -19,6 +19,7 @@ export default function useChatBackend()
             }
 
             const response = await axios.post(url, formData, {
+            withCredentials: true,
             headers: {
                 "Content-Type": "multipart/form-data",
                     

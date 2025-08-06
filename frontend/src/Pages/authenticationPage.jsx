@@ -597,14 +597,15 @@ export default function Authentication() {
                     let response;
                     
                     if(!isLogin) {
-                      response = await axios.post('http://localhost:3001/auth/signup', {
+                      response = await axios.post('https://kempt-1017350567380.europe-west1.run.app/auth/signup', {
+                        
                         email: email.toLowerCase(),
                         password,
                         firstName: firstName.toLowerCase(),
                         lastName: lastName.toLowerCase()
                       });
                     } else {
-                      response = await axios.post('http://localhost:3001/auth/signin', {
+                      response = await axios.post('https://kempt-1017350567380.europe-west1.run.app/auth/signin', {
                         email: email.toLowerCase(), // Add toLowerCase here too
                         password,
                       });

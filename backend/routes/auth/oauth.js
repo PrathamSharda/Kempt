@@ -164,7 +164,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
     //             lastName:googleUser.lastName
     //         }
     // )
-    res.redirect("http://localhost:5173/home");
+    res.redirect("https://kempt.vercel.app/home");
     }
     catch(error)
     {
