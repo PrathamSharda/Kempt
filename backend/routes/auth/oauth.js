@@ -149,8 +149,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
             { expiresIn: '7d' }
         );
 
-
-    res.redirect(`https://kempt.vercel.app/auth/callback?token=${encodeURIcomponent(yourJWT)}`);
+    res.redirect(`https://kempt.vercel.app/auth/callback?token=${encodeURIComponent(yourJWT)}`);
 
     }
     catch(error)
