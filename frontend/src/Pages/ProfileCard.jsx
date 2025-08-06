@@ -565,6 +565,7 @@ function ProfileCard() {
 export default function WrapperProfileCard()
 {
   useLogin();
+  const {isDark, setIsDark} = useContext(bgcolor);
   const navigate=useNavigate();
   const {isLogin,error,loading}=useContext(auth);
   const {errorforToast,seterrorforToast,hideError}=useErrorToast();
