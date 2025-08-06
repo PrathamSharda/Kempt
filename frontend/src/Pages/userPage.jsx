@@ -51,7 +51,7 @@ function UserPage() {
 
     if(errorWhileFetch)
     {
-      seterrorforToast(`could not  connect to backend try again `)
+      seterrorforToast(`could not  connect to backend try agai`)
     }
   },[errorWhileFetch])
 

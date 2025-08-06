@@ -63,8 +63,8 @@ summarizeRouter.post("/",upload.array("files"),async (req,res,next)=>{
    // console.log("summarize")
   }catch (error) {
     console.log(error);
-    res.status(500).json({ 
-            error: "Internal server error", 
+    res.status(400).json({ 
+            error: error, 
             details: error.error 
         });
   }
