@@ -556,6 +556,7 @@ def is_valid_pdf(file_path):
 async def pdf_to_image(file_path):
     ans = {}
     is_valid, validation_msg = is_valid_pdf(file_path)
+    print(is_valid)
     if not is_valid:
         return ans
     
@@ -601,104 +602,23 @@ def get_unique_pdf_filename(original_gcs_path, bucket_name):
     except Exception as e:
         return f"FileStorage/output/extracted_{int(asyncio.get_event_loop().time())}.pdf"
 
-# async def call():
-#     if len(sys.argv) < 2:
-#         return "No GCS file path provided."
-    
-#     gcs_file_path = sys.argv[1]
-#     temp_file_path = download_from_gcs(gcs_file_path)
-#     if not temp_file_path:
-#         return "Failed to download file from GCS."
-    
-#     try:
-#         uploaded = await pdf_to_image(temp_file_path)
-#         if not uploaded:
-#             return "File not processed or the format is not correct."
-        
-#         results = []
-#         for file_name, file_content in uploaded.items():
-#             ans = await run_ocr(file_content)
-#             if '```markdown' in ans:
-#                 start = ans.find('```markdown') + len('```markdown')
-#                 end = ans.find('```', start)
-#                 if end != -1:
-#                     extracted_text = ans[start:end].strip()
-#                 else:
-#                     extracted_text = ans
-#             elif '```' in ans:
-#                 start = ans.find('```') + 3
-#                 end = ans.find('```', start)
-#                 if end != -1:
-#                     extracted_text = ans[start:end].strip()
-#                 else:
-#                     extracted_text = ans
-#             else:
-#                 extracted_text = ans
-            
-#             results.append(extracted_text)
-        
-#         all_extracted_text = "\n\n".join(results)
-#         temp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-#         temp_pdf.close()
-        
-#         create_pdf(all_extracted_text, temp_pdf.name)
-        
-#         bucket_name = gcs_file_path.split('/')[2]
-#         output_blob_name = get_unique_pdf_filename(gcs_file_path, bucket_name)
-#         output_gcs_path = upload_to_gcs(temp_pdf.name, bucket_name, output_blob_name)
-        
-#         cleanup_temp_file(temp_pdf.name)
-        
-#         if output_gcs_path:
-#             return output_gcs_path
-#         else:
-#             return "Processing completed but failed to upload result to GCS."
-            
-#     except Exception as e:
-#         return f"Error during processing: {e}"
-#     finally:
-#         cleanup_temp_file(temp_file_path)
-# Add these debug improvements to your Python script
-
 async def call():
     if len(sys.argv) < 2:
-        print("ERROR: No GCS file path provided.", file=sys.stderr)
         return "No GCS file path provided."
     
     gcs_file_path = sys.argv[1]
-    print(f"DEBUG: Processing GCS file path: {gcs_file_path}", file=sys.stderr)
-    
     temp_file_path = download_from_gcs(gcs_file_path)
     if not temp_file_path:
-        print("ERROR: Failed to download file from GCS.", file=sys.stderr)
         return "Failed to download file from GCS."
     
-    print(f"DEBUG: Downloaded to temp file: {temp_file_path}", file=sys.stderr)
-    print(f"DEBUG: File size: {os.path.getsize(temp_file_path)} bytes", file=sys.stderr)
-    
     try:
-        # Check if file is valid before processing
-        is_valid, validation_msg = is_valid_pdf(temp_file_path)
-        print(f"DEBUG: PDF validation: {is_valid}, message: {validation_msg}", file=sys.stderr)
-        
-        if not is_valid:
-            print(f"ERROR: PDF validation failed: {validation_msg}", file=sys.stderr)
-            return f"PDF validation failed: {validation_msg}"
-        
         uploaded = await pdf_to_image(temp_file_path)
-        print(f"DEBUG: PDF to image conversion returned {len(uploaded)} pages", file=sys.stderr)
-        
         if not uploaded:
-            print("ERROR: File not processed or the format is not correct.", file=sys.stderr)
             return "File not processed or the format is not correct."
         
         results = []
         for file_name, file_content in uploaded.items():
-            print(f"DEBUG: Processing page: {file_name}", file=sys.stderr)
             ans = await run_ocr(file_content)
-            print(f"DEBUG: OCR result length: {len(ans)} characters", file=sys.stderr)
-            
-            # Your existing text extraction logic here...
             if '```markdown' in ans:
                 start = ans.find('```markdown') + len('```markdown')
                 end = ans.find('```', start)
@@ -719,36 +639,23 @@ async def call():
             results.append(extracted_text)
         
         all_extracted_text = "\n\n".join(results)
-        print(f"DEBUG: Combined extracted text length: {len(all_extracted_text)} characters", file=sys.stderr)
-        
         temp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
         temp_pdf.close()
         
         create_pdf(all_extracted_text, temp_pdf.name)
-        print(f"DEBUG: Created PDF: {temp_pdf.name}", file=sys.stderr)
-        print(f"DEBUG: Created PDF size: {os.path.getsize(temp_pdf.name)} bytes", file=sys.stderr)
         
         bucket_name = gcs_file_path.split('/')[2]
         output_blob_name = get_unique_pdf_filename(gcs_file_path, bucket_name)
-        print(f"DEBUG: Uploading to: {output_blob_name}", file=sys.stderr)
-        
         output_gcs_path = upload_to_gcs(temp_pdf.name, bucket_name, output_blob_name)
-        print(f"DEBUG: Upload result: {output_gcs_path}", file=sys.stderr)
         
         cleanup_temp_file(temp_pdf.name)
         
         if output_gcs_path:
-            print(f"SUCCESS: {output_gcs_path}", file=sys.stderr)
             return output_gcs_path
         else:
-            print("ERROR: Processing completed but failed to upload result to GCS.", file=sys.stderr)
             return "Processing completed but failed to upload result to GCS."
             
     except Exception as e:
-        print(f"ERROR: Exception during processing: {e}", file=sys.stderr)
-        print(f"ERROR: Exception type: {type(e).__name__}", file=sys.stderr)
-        import traceback
-        print(f"ERROR: Traceback: {traceback.format_exc()}", file=sys.stderr)
         return f"Error during processing: {e}"
     finally:
         cleanup_temp_file(temp_file_path)
