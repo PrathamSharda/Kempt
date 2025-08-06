@@ -49,6 +49,7 @@ export default function Authentication() {
     window.location.href="https://kempt-1017350567380.europe-west1.run.app/auth/LoginWithGoogle/"
   };
 
+
   return (
     <Transtion>
       {errorforToast && (

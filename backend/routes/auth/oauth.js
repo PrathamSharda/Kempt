@@ -123,7 +123,7 @@ oauthRouter.get("/callback",async (req,res,next)=>
                 isGoogleUser: true,
                 password: null 
             });
-           
+
         }else{
             user=await userCredentials.updateOne(
                     { email: googleUser.email },
@@ -149,15 +149,8 @@ oauthRouter.get("/callback",async (req,res,next)=>
             { expiresIn: '7d' }
         );
 
-        // res.cookie('token', yourJWT, {
-        //     httpOnly: true,
-        //     secure:true,
-        //     sameSite: 'none', 
-        //     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        // });
-
-
     res.redirect(`https://kempt.vercel.app/auth/callback?token=${encodeURIComponent(yourJWT)}`);
+
     }
     catch(error)
     {
