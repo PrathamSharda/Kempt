@@ -524,8 +524,22 @@ function UserPage() {
               color: theme.textSecondary,
               margin: "0",
               transition: "color 0.3s ease"
-            }}>
-              <span> Upload a document or ask me anything to get started, maximum at a time you can upload 1 documents,  1 Token == 1 File </span> 
+            }}
+            >
+              <pre style={{
+                textAlign: "center"
+              }}>
+               Upload a document or ask me anything to get started,<br></br> maximum at a time you can upload 1 document (1MB limit), <br></br>1 Token is 1 prompt 
+              <br />
+              <br />
+              <b> For summarization</b>- Prompt and input file is a must
+              <br />
+              <br />
+               <b>For Q and A</b>- initially a File but then only question can work 
+              <br />
+              <br />
+               <b> For FIX pdf</b>- File is a must
+              </pre>
             </p>
           </div>
 

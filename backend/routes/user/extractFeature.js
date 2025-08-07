@@ -6,7 +6,7 @@ const multer=require("multer")
 const fs=require("fs");
 const { Storage } = require("@google-cloud/storage");
 const {PythonFileCaller}=require("../../python/OCRcaller")
-
+const path=require("path");
 
 featureExtractRouter.use(express.urlencoded({extended:false}));
 const gcs = new Storage();
@@ -33,7 +33,9 @@ const generateSignedUrl = async (gcsPath) => {
 const storage =multer.diskStorage({
   destination: function (req,file,cb)
   {
-    return cb(null,"/python/FileStorage/")
+     const absolutePath = path.resolve(__dirname, '../../python/FileStorage/');
+    fs.mkdirSync(absolutePath, { recursive: true });
+    return cb(null,absolutePath)
   },
   filename:function (req,file,cb)
   {
@@ -52,15 +54,15 @@ featureExtractRouter.post("/",upload.array("files"),async (req,res,next)=>{
             
         }
         const promises = files.map(async (file) => {
-            let fileName = file.destination + file.filename;
-            //console.log(fileName);
+            let fileName = path.join(file.destination , file.filename);
+            console.log(fileName);
             return await PythonFileCaller(fileName, 'fix');
         });
 
       const results = await Promise.all(promises);
       //cleanup
       const cleanupPromise = files.map(async (file) => {
-            let fileName = file.destination + file.filename;
+            let fileName = path.join(file.destination , file.filename);
             //console.log(fileName);
             return await fs.unlink(fileName,(err) => {
             if (err) {
