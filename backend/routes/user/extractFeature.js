@@ -33,7 +33,7 @@ const generateSignedUrl = async (gcsPath) => {
 const storage =multer.diskStorage({
   destination: function (req,file,cb)
   {
-    return cb(null,"./python/FileStorage/")
+    return cb(null,"/python/FileStorage/")
   },
   filename:function (req,file,cb)
   {
