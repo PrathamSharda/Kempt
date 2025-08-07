@@ -3,6 +3,7 @@ const {Router}=require("express");
 const featureExtractRouter=Router();
 const dotenv=require("dotenv");
 const multer=require("multer")
+const fs=require("fs");
 const { Storage } = require("@google-cloud/storage");
 const {PythonFileCaller}=require("../../python/OCRcaller")
 
@@ -10,27 +11,7 @@ const {PythonFileCaller}=require("../../python/OCRcaller")
 featureExtractRouter.use(express.urlencoded({extended:false}));
 const gcs = new Storage();
 
-const bucket = gcs.bucket("kemptstorage");
-const uploadToGCS = (file) => {
-  return new Promise((resolve, reject) => {
-    const fileName = `${Date.now()}_${file.originalname}`;
-    const blob = bucket.file(fileName);
-    const blobStream = blob.createWriteStream({
-      resumable: false,
-    });
 
-    blobStream.on("error", (err) => {
-      reject(err);
-    });
-
-    blobStream.on("finish", () => {
-      const gcsPath = `gs://kemptstorage/${fileName}`;
-      resolve(gcsPath);
-    });
-
-    blobStream.end(file.buffer);
-  });
-};
 
 const generateSignedUrl = async (gcsPath) => {
   try {
@@ -49,12 +30,22 @@ const generateSignedUrl = async (gcsPath) => {
   }
 };
 
-const upload = multer({ storage: multer.memoryStorage() });
-
+const storage =multer.diskStorage({
+  destination: function (req,file,cb)
+  {
+    return cb(null,"./python/FileStorage/")
+  },
+  filename:function (req,file,cb)
+  {
+    return cb(null,`${Date.now()}-${file.originalname}`);
+  }
+})
+const upload=multer({storage:storage})
 featureExtractRouter.post("/",upload.array("files"),async (req,res,next)=>{
      try {
         let ans="";
         const files=req.files;
+      //  console.log(files);
         if(files===null||files.length==0 )
         {
             throw {error:"files are sent for excution ",type:"no file error"};
@@ -62,11 +53,25 @@ featureExtractRouter.post("/",upload.array("files"),async (req,res,next)=>{
         }
         const promises = files.map(async (file) => {
             let fileName = file.destination + file.filename;
-            const gcsFilePath = await uploadToGCS(file);
-            return await PythonFileCaller(gcsFilePath, 'fix');
+            //console.log(fileName);
+            return await PythonFileCaller(fileName, 'fix');
         });
 
       const results = await Promise.all(promises);
+      //cleanup
+      const cleanupPromise = files.map(async (file) => {
+            let fileName = file.destination + file.filename;
+            //console.log(fileName);
+            return await fs.unlink(fileName,(err) => {
+            if (err) {
+            throw err;
+            } else {
+              //console.log('File deleted successfully');
+            }
+            });
+          });
+        const cleanup=await Promise.all(cleanupPromise);
+
        ans = results.join(',');
 
        let array=ans.split(",");
