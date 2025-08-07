@@ -8,9 +8,9 @@ const spawn=require("child_process").spawn;
     try{
       
     pythonFile ="python/OCR.py"
-    
+    //  console.log("here");
     const process= spawn("python3",[pythonFile,fileName]);
-
+// console.log(process);
     let data = "";
     let errorData = "";
 
