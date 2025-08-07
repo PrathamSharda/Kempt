@@ -82,7 +82,7 @@ def cleanup_images_folder(images_folder):
 async def run_ocr(file_content):
     """Run OCR using Ollama API"""
     try:
-
+        OLLAMA_API = os.getenv('OLLAMA_API')
         
         image_base64 = base64.b64encode(file_content).decode('utf-8')
         payload = {
@@ -93,7 +93,7 @@ async def run_ocr(file_content):
         }
         
         async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=300)) as session:
-            async with session.post("https://ollama-gcs-1017350567380.europe-west1.run.app/api/generate", json=payload) as response:
+            async with session.post(OLLAMA_API, json=payload) as response:
                 if response.status != 200:
                     error_text = await response.text()
                     return f"API Error: {response.status} - {error_text}"
