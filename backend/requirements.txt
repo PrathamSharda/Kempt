@@ -2,7 +2,6 @@ aiohttp
 google-cloud-storage
 python-dotenv
 reportlab
-poppler-utils
 pdf2image
 Pillow
 markdown
