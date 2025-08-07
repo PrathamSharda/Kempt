@@ -61,7 +61,7 @@ Fix "broken" PDFs where text selection doesn't work by converting them into sear
 - **React Router** - Client-side routing
 - **Context API** - State management
 - **Axios** - HTTP client
-- **Responsive Design** - Mobile-friendly interface
+- **Responsive Design** - Mobile-friendly interface( coming soon.....)
 
 ### Infrastructure & Security
 - **JWT Authentication** - Secure token-based auth
