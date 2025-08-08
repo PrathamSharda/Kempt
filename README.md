@@ -121,16 +121,16 @@ POST /user/summarize   # Generate summary
 
 - **Backend:** Node.js, Express
 - **Frontend:** React
-- **Databases:** MongoDB (users), Redis (sessions), ChromaDB (document vectors)
+- **Databases:** MongoDB (users), Redis (state storage using oauth), ChromaDB (document vectors)
 - **AI:** Ollama (OCR), Google Gemini (chat), LangChain (document processing)
 - **Storage:** Google Cloud Storage
 
 ## Limitations
 
-- Free users get 5 requests per 8 hours
-- OCR works best with clear, high-quality scans
-- Document chat quality depends on how well the text chunks
-- Requires Google Cloud account for file storage
+- Free users get 5 requests which when over are renewed every *8hours
+- OCR works best with clear, high-quality scans, 
+- Document chat quality depends on how well the text chunks are created and how clean the question is
+- Requires Google Cloud account for file storage (of the OCR file)
 
 ## Development
 
@@ -148,9 +148,8 @@ npm run type-check
 ## Deployment
 
 Works on any platform that supports Docker. Tested on:
-- Google Cloud Run
-- Railway
-- Heroku (with Redis addon)
+- Google Cloud Run (backend + OLLAMA)
+- Vercel (frontend)
 
 ## Contributing
 
