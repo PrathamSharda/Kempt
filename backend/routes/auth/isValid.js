@@ -3,6 +3,7 @@ const isValid=Router();
 const jwt=require("jsonwebtoken");
 const dotenv=require("dotenv");
 const {userCredentials}=require("../../database/db.js");
+const { TokenReducer,TokenResetter}=require("../user/TokenChecker.js")
 dotenv.config();
 
 const jwt_secret=process.env.jwt_secret;
@@ -34,6 +35,13 @@ isValid.get("/",async (req,res,next)=>{
         if(!gettingUser)
         {
             throw {error:"token pointing to the user doesnt exist",type:"login failed"};
+        }
+        const val2=await TokenResetter(gettingUser.email);
+        const value=await TokenReducer(gettingUser.email);
+        if(!value.success)
+        {
+
+            throw {error:"out of token please try later"};
         }
 
          res.json({
