@@ -28,6 +28,7 @@ function UserPage() {
   const [text,setText]=useState("Where should we begin?")
   const[isLogout,setIsLogout]=useState(false);
 
+
    useEffect(() => {
         const logout = () => {
           if(isLogout)
@@ -142,7 +143,7 @@ function UserPage() {
     fileArray.forEach(file => {
       // Check file size
       const arr=file.name.split(".");
-      if(arr[1]!="pdf")
+      if(arr[arr.length-1]!="pdf")
       {
         errors.push(`${file.name} is not a pdf file should be a PDF`);
         return;
@@ -520,7 +521,7 @@ function UserPage() {
             }}>
               {text}
             </h1>
-            <p style={{
+            <div style={{
               fontSize: "1rem",
               color: theme.textSecondary,
               margin: "0",
@@ -541,7 +542,7 @@ function UserPage() {
               <br />
                <b> For FIX pdf</b>- File is a must
               </pre>
-            </p>
+            </div>
           </div>
 
           {/* Uploaded Files Display */}
