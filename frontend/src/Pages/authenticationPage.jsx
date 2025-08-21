@@ -59,6 +59,7 @@ export default function Authentication() {
       />
     )}
     <div style={{
+      maxHeight:"100%",
       minHeight: "100vh",
       width: "100%",
       backgroundColor: theme.bg,
@@ -186,6 +187,7 @@ export default function Authentication() {
 
       {/* Main content */}
       <div style={{
+        maxHeight:"100%",
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",

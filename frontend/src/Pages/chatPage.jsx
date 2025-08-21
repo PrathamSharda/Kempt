@@ -400,6 +400,7 @@ const ActionButtons = ({ theme, selectedAction, setSelectedAction, isDark }) => 
             )}
         <div 
           style={{
+            maxHeight:"100%",
             minHeight: "100vh",
             width: "100%",
             backgroundColor: theme.bg,

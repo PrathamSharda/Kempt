@@ -28,21 +28,28 @@ isValid.get("/",async (req,res,next)=>{
         const decodeToken=jwt.decode(token);
 
         // console.log("token",decodeToken);
+        const gettingUser1=await userCredentials.findOne({
+                _id:decodeToken.id
+        })
+               
+        if(!gettingUser1)
+        {
+            throw {error:"token pointing to the user doesnt exist",type:"login failed"};
+        }
+
+
+        const val2=await TokenResetter(gettingUser1.email);
+        
         const gettingUser=await userCredentials.findOne({
                 _id:decodeToken.id
         })
-        // console.log("user",gettingUser);
+               
         if(!gettingUser)
         {
             throw {error:"token pointing to the user doesnt exist",type:"login failed"};
         }
-        const val2=await TokenResetter(gettingUser.email);
-        const value=await TokenReducer(gettingUser.email);
-        if(!value.success)
-        {
 
-            throw {error:"out of token please try later"};
-        }
+        // console.log("user",gettingUser);
 
          res.json({
             firstName:gettingUser.firstName,

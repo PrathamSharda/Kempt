@@ -68,6 +68,7 @@ function ProfileCard() {
   return (
     <Transition>
     <div style={{
+      maxHeight:"100%",
       minHeight: "100vh",
       width: "100%",
       backgroundColor: theme.bg,
@@ -229,6 +230,7 @@ function ProfileCard() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        maxHeight:"100%",
         minHeight: "100vh"
       }}>
         

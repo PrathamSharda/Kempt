@@ -258,6 +258,7 @@ function UserPage() {
       
       <div 
         style={{
+          maxHeight:"100%",
           minHeight: "100vh",
           width: "100%",
           backgroundColor: theme.bg,

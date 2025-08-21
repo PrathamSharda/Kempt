@@ -50,6 +50,7 @@ function LandingPage() {
   return (
     <Transtion>
       <div style={{
+        maxHeight:"100%",
         minHeight: "100vh",
         width: "100%",
         backgroundColor: theme.bg,
@@ -223,6 +224,7 @@ function LandingPage() {
           
           {/* Hero Section */}
           <div style={{
+            maxHeight:"100%",
             height: "100vh",
             display: "flex",
             alignItems: "center"
