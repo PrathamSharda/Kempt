@@ -14,9 +14,7 @@ isValid.use("/",async (req,res,next)=>{
     const user=jwt.decode(Token);
     const email=user.email;
     const val2=await TokenResetter(email);
-    console.error(val2);
     req.email=email;
-    console.error(Token);
     next();
     }
     catch(error)
@@ -48,7 +46,7 @@ isValid.get("/",async (req,res,next)=>{
 
         // console.log("token",decodeToken);
         const gettingUser = await userCredentials.findOne({
-            _id: decodeToken.id
+            email:decodeToken.email
         });
 
         if (!gettingUser) {
