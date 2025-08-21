@@ -41,15 +41,14 @@ async function TokenResetter(email) {
     try {
 
         let user = await userCredentials.findOne({ email });
-         console.log
+
         if (!user) {
             throw { error: "user not found", type: "user_not_found" };
         }
 
         let totalToken = user.token;
-        let tokenResetTime = new Date(user.tokenResetTime);
-        
 
+        let tokenResetTime = user.tokenResetTime;
         if (totalToken === 0 && tokenResetTime && new Date() >= tokenResetTime) {
 
             const newTokenCount = user.premiumUser ? 30 : 5; 

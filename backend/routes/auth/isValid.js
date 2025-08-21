@@ -11,15 +11,17 @@ const jwt_secret=process.env.jwt_secret;
 isValid.use("/",async (req,res,next)=>{
     try{
     const Token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+
     const user=jwt.decode(Token);
     const email=user.email;
+
     const val2=await TokenResetter(email);
+
     req.email=email;
     next();
     }
     catch(error)
     {
-        console.log(error);
         res.status(400).json({
             error
         })
@@ -44,7 +46,6 @@ isValid.get("/",async (req,res,next)=>{
         }
         const decodeToken=jwt.decode(token);
 
-        // console.log("token",decodeToken);
         const gettingUser = await userCredentials.findOne({
             email:decodeToken.email
         });
