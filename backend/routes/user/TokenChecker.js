@@ -41,12 +41,13 @@ async function TokenResetter(email) {
     try {
 
         let user = await userCredentials.findOne({ email });
+         console.log
         if (!user) {
             throw { error: "user not found", type: "user_not_found" };
         }
 
         let totalToken = user.token;
-        let tokenResetTime = user.tokenResetTime;
+        let tokenResetTime = new Date(user.tokenResetTime);
         
        // console.log(`Current tokens: ${totalToken}, Reset time: ${tokenResetTime}`);
 
