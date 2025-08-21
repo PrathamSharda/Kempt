@@ -7,7 +7,24 @@ const { TokenReducer,TokenResetter}=require("../user/TokenChecker.js")
 dotenv.config();
 
 const jwt_secret=process.env.jwt_secret;
-
+isValid.use("/",async (req,res,next)=>{
+    try{
+    const Token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    const user=jwt.decode(Token);
+    const email=user.email;
+    const val2=await TokenResetter(email);
+    const value=await TokenReducer(email);
+    req.email=email;
+    next();
+    }
+    catch(error)
+    {
+        console.log(error);
+        res.status(400).json({
+            error
+        })
+    }
+});
 isValid.get("/",async (req,res,next)=>{
     try{
         const allowedOrigins = ['https://kempt.vercel.app', 'http://localhost:5173'];
@@ -28,7 +45,7 @@ isValid.get("/",async (req,res,next)=>{
         const decodeToken=jwt.decode(token);
 
         // console.log("token",decodeToken);
-        let gettingUser = await userCredentials.findOne({
+        const gettingUser = await userCredentials.findOne({
             _id: decodeToken.id
         });
 
@@ -36,21 +53,6 @@ isValid.get("/",async (req,res,next)=>{
             throw { error: "token pointing to the user doesn't exist", type: "login failed" };
         }
         
-        // Call TokenResetter to check and reset tokens if the conditions are met.
-
-        const resetResult = await TokenResetter(gettingUser.email);
-        
-        // If the tokens were successfully reset, we need to re-fetch the user
-        // to get the new, updated token count.
-        console.log(resetResult);
-        
-        if (resetResult.success) {
-            gettingUser = await userCredentials.findOne({
-                _id: decodeToken.id
-            });
-        }
-
-        // console.log("user",gettingUser);
 
          res.json({
             firstName:gettingUser.firstName,
