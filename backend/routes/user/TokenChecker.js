@@ -50,9 +50,9 @@ async function TokenResetter(email) {
         let tokenResetTime = new Date(user.tokenResetTime);
         
        // console.log(`Current tokens: ${totalToken}, Reset time: ${tokenResetTime}`);
-
+        console.log(tokenResetTime);
         if (totalToken === 0 && tokenResetTime && new Date() >= tokenResetTime) {
-
+            console.log("resetting...........");
             const newTokenCount = user.premiumUser ? 30 : 5; 
             
             await userCredentials.updateOne(

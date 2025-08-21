@@ -28,25 +28,26 @@ isValid.get("/",async (req,res,next)=>{
         const decodeToken=jwt.decode(token);
 
         // console.log("token",decodeToken);
-        const gettingUser1=await userCredentials.findOne({
-                _id:decodeToken.id
-        })
-               
-        if(!gettingUser1)
-        {
-            throw {error:"token pointing to the user doesnt exist",type:"login failed"};
+        let gettingUser = await userCredentials.findOne({
+            _id: decodeToken.id
+        });
+
+        if (!gettingUser) {
+            throw { error: "token pointing to the user doesn't exist", type: "login failed" };
         }
-
-
-        const val2=await TokenResetter(gettingUser1.email);
         
-        const gettingUser=await userCredentials.findOne({
-                _id:decodeToken.id
-        })
-               
-        if(!gettingUser)
-        {
-            throw {error:"token pointing to the user doesnt exist",type:"login failed"};
+        // Call TokenResetter to check and reset tokens if the conditions are met.
+
+        const resetResult = await TokenResetter(gettingUser.email);
+        
+        // If the tokens were successfully reset, we need to re-fetch the user
+        // to get the new, updated token count.
+        console.log(resetResult);
+        
+        if (resetResult.success) {
+            gettingUser = await userCredentials.findOne({
+                _id: decodeToken.id
+            });
         }
 
         // console.log("user",gettingUser);
