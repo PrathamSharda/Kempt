@@ -13,7 +13,7 @@ isValid.use("/",async (req,res,next)=>{
     const user=jwt.decode(Token);
     const email=user.email;
     const val2=await TokenResetter(email);
-    const value=await TokenReducer(email);
+    console.log(val2);
     req.email=email;
     next();
     }
