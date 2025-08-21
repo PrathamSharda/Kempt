@@ -7,14 +7,16 @@ const { TokenReducer,TokenResetter}=require("../user/TokenChecker.js")
 dotenv.config();
 
 const jwt_secret=process.env.jwt_secret;
+
 isValid.use("/",async (req,res,next)=>{
     try{
     const Token = req.cookies.token || req.headers.authorization?.split(' ')[1];
     const user=jwt.decode(Token);
     const email=user.email;
     const val2=await TokenResetter(email);
-    console.log(val2);
+    console.error(val2);
     req.email=email;
+    console.error(Token);
     next();
     }
     catch(error)
