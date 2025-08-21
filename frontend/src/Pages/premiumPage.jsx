@@ -76,6 +76,7 @@ function BuyPremiumPage() {
   return (
     <Transition>
       <div style={{
+        maxHeight:"100%",
         minHeight: "100vh",
         width: "100%",
         backgroundColor: theme.bg,
@@ -214,6 +215,7 @@ function BuyPremiumPage() {
           padding: "6rem 3rem 3rem",
           position: "relative",
           zIndex: 10,
+          maxHeight:"100%",
           minHeight: "100vh"
         }}>
           

@@ -295,8 +295,7 @@ def spawn_rag_process(file_path, question, google_api_key, user_id, **kwargs):
             print(f"Error output: {e.stderr}")
         return e
 
-
-async def process_and_query(file_path, question, google_api_key, user_id, model="gemini-1.5-flash", 
+async def process_and_query(file_path, question, google_api_key, user_id, model="gemini-2.5-flash",
                           db_path=None, max_tokens=1000, top_k=6, quiet=False):
     rag = RAGPipeline(google_api_key, db_path, model, verbose=not quiet, user_id=user_id)
     temp_file_path = None
