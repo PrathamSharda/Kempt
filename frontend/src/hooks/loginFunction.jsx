@@ -18,7 +18,7 @@ export default function useLogin()
           setError("No token found");
           return;
         }
-        const response = await axios.get("https://kempt-1017350567380.europe-west1.run.app/auth/isValid/", {
+        const response = await axios.get("https://kempt-137052021315.europe-west1.run.app/auth/isValid/", {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
