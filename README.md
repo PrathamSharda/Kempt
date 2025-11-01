@@ -12,7 +12,12 @@ A document processing app that lets you chat with PDFs, extract text from scanne
 
 ## Demo
 
+### Original Image
+
 <img width="584" height="798" alt="image" src="https://github.com/user-attachments/assets/723e5c0a-d865-4f7f-8afe-c98d56b0c1ab" />
+
+### Output Image 
+( This image when received would be in a pdf form with selectable text )
 
 <img width="649" height="873" alt="image" src="https://github.com/user-attachments/assets/00b48b07-79c4-4906-b9b2-19b8a85ad075" />
 
