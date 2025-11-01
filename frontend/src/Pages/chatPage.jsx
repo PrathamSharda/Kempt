@@ -220,7 +220,7 @@ useLogin();
             setUploadedFiles([]);
             setErrorWhileFetch(false);
             const response = await chatBackendCaller(
-              `https://kempt-1017350567380.europe-west1.run.app/user/${selectedAction}`,
+              `https://kempt-137052021315.europe-west1.run.app/user/${selectedAction}`,
               formData,
               setMessage,
               setIsGeneratingResponse

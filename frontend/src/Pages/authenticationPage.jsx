@@ -46,7 +46,7 @@ export default function Authentication() {
   );
 
   const handleGoogleLogin = () => {
-    window.location.href="https://kempt-1017350567380.europe-west1.run.app/auth/LoginWithGoogle/"
+    window.location.href="https://kempt-137052021315.europe-west1.run.app/auth/LoginWithGoogle/"
   };
 
 
@@ -600,7 +600,7 @@ export default function Authentication() {
                     let response;
                     
                     if(!isLogin) {
-                      response = await axios.post('https://kempt-1017350567380.europe-west1.run.app/auth/signup', {
+                      response = await axios.post('https://kempt-137052021315.europe-west1.run.app/auth/signup', {
                         
                         email: email.toLowerCase(),
                         password,
@@ -608,7 +608,7 @@ export default function Authentication() {
                         lastName: lastName.toLowerCase()
                       });
                     } else {
-                      response = await axios.post('https://kempt-1017350567380.europe-west1.run.app/auth/signin', {
+                      response = await axios.post('https://kempt-137052021315.europe-west1.run.app/auth/signin', {
                         email: email.toLowerCase(), // Add toLowerCase here too
                         password,
                       });
