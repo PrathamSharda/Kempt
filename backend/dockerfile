@@ -18,10 +18,11 @@ COPY requirements.txt ./
 
 RUN npm install
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir --upgrade google-cloud-storage google-auth google-api-core importlib_metadata
+RUN pip install --no-cache-dir --upgrade google-auth google-api-core importlib_metadata
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
 EXPOSE 8080
+
 CMD ["npm", "run", "start"]
